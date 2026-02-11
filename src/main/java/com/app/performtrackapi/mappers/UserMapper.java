@@ -1,0 +1,21 @@
+package com.app.performtrackapi.mappers;
+
+import com.app.performtrackapi.dtos.User.UserCreateDto;
+import com.app.performtrackapi.dtos.User.UserResponseDto;
+import com.app.performtrackapi.dtos.User.UserUpdateDto;
+import com.app.performtrackapi.entities.User;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
+@Mapper(componentModel = "spring")
+public interface UserMapper {
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "password", ignore = true) // El password se codifica manualmente en el servicio
+    User toEntity(UserCreateDto userCreateDto);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "password", ignore = true)
+    User toEntity(UserUpdateDto userUpdateDto);
+
+    UserResponseDto toResponseDto(User user);
+}

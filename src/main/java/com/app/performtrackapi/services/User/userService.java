@@ -1,0 +1,14 @@
+package com.app.performtrackapi.services.User;
+
+import com.app.performtrackapi.dtos.User.UserCreateDto;
+import com.app.performtrackapi.dtos.User.UserResponseDto;
+import com.app.performtrackapi.dtos.User.UserUpdateDto;
+
+import java.util.UUID;
+
+public interface userService {
+    UserResponseDto createUser(UserCreateDto userCreateDto);
+    UserResponseDto updateUser(UUID id, UserUpdateDto userUpdateDto);
+    void deleteUser(UUID id);
+    UserResponseDto getUserByEmail(String email);
+}
