@@ -52,7 +52,7 @@ tasks.named('test') {
 }
 
 // MapStruct configuration
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.compilerArgs = [
             '-Amapstruct.defaultComponentModel=spring',
             '-parameters'
