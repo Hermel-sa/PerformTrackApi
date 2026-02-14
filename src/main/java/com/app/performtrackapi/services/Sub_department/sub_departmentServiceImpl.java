@@ -1,0 +1,91 @@
+package com.app.performtrackapi.services.Sub_department;
+import com.app.performtrackapi.dtos.Department.DepartmentDto;
+import com.app.performtrackapi.dtos.Sub_department.SubDepartmentDto;
+import com.app.performtrackapi.entities.Department;
+import com.app.performtrackapi.entities.Sub_department;
+import com.app.performtrackapi.exceptions.BadRequestException;
+import com.app.performtrackapi.exceptions.ResourceNotFound;
+import com.app.performtrackapi.mappers.DepartmentMapper;
+import com.app.performtrackapi.mappers.SubDepartmentMapper;
+import com.app.performtrackapi.repositories.DepartmentRepository;
+import com.app.performtrackapi.repositories.SubDepartmentRepository;
+import lombok.NonNull;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.UUID;
+
+@Service
+@Transactional
+public class sub_departmentServiceImpl implements sub_departmentService{
+
+    private final SubDepartmentRepository subDepartmentRepository;
+    private final SubDepartmentMapper subDepartmentMapper;
+
+
+    public sub_departmentServiceImpl(SubDepartmentRepository subDepartmentRepository, SubDepartmentMapper subDepartmentMapper) {
+        this.subDepartmentRepository = subDepartmentRepository;
+        this.subDepartmentMapper = subDepartmentMapper;
+    }
+
+    @Override
+    public SubDepartmentDto getSubDepartmentById(UUID id) {
+        Sub_department subDepartment = subDepartmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Sub department not found")
+                );
+
+        return subDepartmentMapper.toDto(subDepartment);
+    }
+
+    @Override
+    public SubDepartmentDto getSubDepartmentByDepartmentId(UUID departmentId) {
+
+        Sub_department subDepartment = subDepartmentRepository.findByDepartmentId(departmentId);
+        return subDepartmentMapper.toDto(subDepartment);
+    }
+
+    @Override
+    public SubDepartmentDto createSubDepartment(@NonNull SubDepartmentDto subDepartmentDto) {
+        if (subDepartmentRepository.existsByName(subDepartmentDto.getName())) {
+            throw new BadRequestException("Sub department already exists");
+        }
+
+        Sub_department subDepartment = subDepartmentMapper.toEntity(subDepartmentDto);
+
+        Sub_department savedSubDepartment = subDepartmentRepository.save(subDepartment);
+
+        return subDepartmentMapper.toDto(savedSubDepartment);
+    }
+
+    @Override
+    public SubDepartmentDto updateSubDepartment(UUID id, @NonNull SubDepartmentDto subDepartmentDto) {
+        Sub_department subDepartment = subDepartmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Sub department not found")
+                );
+
+        if (subDepartmentDto.getName() != null) {
+            subDepartment.setName(subDepartmentDto.getName());
+        }
+
+        Sub_department updatedSubDepartment = subDepartmentRepository.save(subDepartment);
+
+        return subDepartmentMapper.toDto(updatedSubDepartment);
+    }
+
+    @Override
+    public List<SubDepartmentDto> getAllSubDepartments() {
+        return subDepartmentRepository.findAll()
+                .stream()
+                .map(subDepartmentMapper::toDto).toList();
+    }
+
+    @Override
+    public void deleteSubDepartment(UUID id) {
+        if (!subDepartmentRepository.existsById(id)) {
+            throw new ResourceNotFound("Sub department not found");
+        }
+
+        subDepartmentRepository.deleteById(id);
+    }
+}

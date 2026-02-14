@@ -1,4 +1,4 @@
-package com.app.performtrackapi.controllers.User;
+package com.app.performtrackapi.controllers;
 
 import com.app.performtrackapi.dtos.User.UserCreateDto;
 import com.app.performtrackapi.dtos.User.UserResponseDto;
@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> userDelete(@PathVariable("id") UUID id) {
+    public ResponseEntity<Void> userDelete(@PathVariable("id") UUID id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }

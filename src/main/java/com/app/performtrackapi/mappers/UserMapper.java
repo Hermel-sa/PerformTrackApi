@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "password", ignore = true) // El password se codifica manualmente en el servicio
+    @Mapping(target = "password", ignore = true)
     User toEntity(UserCreateDto userCreateDto);
 
     @Mapping(target = "id", ignore = true)

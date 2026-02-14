@@ -1,4 +1,4 @@
-package com.app.performtrackapi.controllers.Auth;
+package com.app.performtrackapi.controllers;
 
 import com.app.performtrackapi.dtos.Auth.AuthRequest;
 import com.app.performtrackapi.dtos.Auth.AuthResponse;
