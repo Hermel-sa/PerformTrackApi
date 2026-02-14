@@ -25,7 +25,7 @@ public class DepartmentController {
         return ResponseEntity.ok(departmentDto);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<DepartmentDto> createDepartment(@RequestBody DepartmentDto departmentDto){
         return new ResponseEntity<>(departmentService.createDepartment(departmentDto), HttpStatus.CREATED);
     }
@@ -35,7 +35,7 @@ public class DepartmentController {
         return ResponseEntity.ok(departmentService.updateDepartment(departmentId, departmentDto));
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<DepartmentDto>> getAllDepartments(){
         List<DepartmentDto> departments = departmentService.getAllDepartments();
         if(departments.isEmpty()){

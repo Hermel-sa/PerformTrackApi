@@ -1,11 +1,9 @@
 package com.app.performtrackapi.services.Sub_department;
-import com.app.performtrackapi.dtos.Department.DepartmentDto;
 import com.app.performtrackapi.dtos.Sub_department.SubDepartmentDto;
 import com.app.performtrackapi.entities.Department;
 import com.app.performtrackapi.entities.Sub_department;
 import com.app.performtrackapi.exceptions.BadRequestException;
 import com.app.performtrackapi.exceptions.ResourceNotFound;
-import com.app.performtrackapi.mappers.DepartmentMapper;
 import com.app.performtrackapi.mappers.SubDepartmentMapper;
 import com.app.performtrackapi.repositories.DepartmentRepository;
 import com.app.performtrackapi.repositories.SubDepartmentRepository;
@@ -22,11 +20,13 @@ public class sub_departmentServiceImpl implements sub_departmentService{
 
     private final SubDepartmentRepository subDepartmentRepository;
     private final SubDepartmentMapper subDepartmentMapper;
+    private final DepartmentRepository departmentRepository;
 
 
-    public sub_departmentServiceImpl(SubDepartmentRepository subDepartmentRepository, SubDepartmentMapper subDepartmentMapper) {
+    public sub_departmentServiceImpl(SubDepartmentRepository subDepartmentRepository, SubDepartmentMapper subDepartmentMapper, DepartmentRepository departmentRepository) {
         this.subDepartmentRepository = subDepartmentRepository;
         this.subDepartmentMapper = subDepartmentMapper;
+        this.departmentRepository = departmentRepository;
     }
 
     @Override
@@ -47,11 +47,16 @@ public class sub_departmentServiceImpl implements sub_departmentService{
 
     @Override
     public SubDepartmentDto createSubDepartment(@NonNull SubDepartmentDto subDepartmentDto) {
+
         if (subDepartmentRepository.existsByName(subDepartmentDto.getName())) {
             throw new BadRequestException("Sub department already exists");
         }
 
+        Department department = departmentRepository.findById(subDepartmentDto.getDepartmentId())
+                .orElseThrow(() -> new ResourceNotFound("Department not found"));
+
         Sub_department subDepartment = subDepartmentMapper.toEntity(subDepartmentDto);
+        subDepartment.setDepartment(department);
 
         Sub_department savedSubDepartment = subDepartmentRepository.save(subDepartment);
 
@@ -66,6 +71,12 @@ public class sub_departmentServiceImpl implements sub_departmentService{
 
         if (subDepartmentDto.getName() != null) {
             subDepartment.setName(subDepartmentDto.getName());
+        }
+
+        if (subDepartmentDto.getDepartmentId() != null) {
+            Department department = departmentRepository.findById(subDepartmentDto.getDepartmentId())
+                    .orElseThrow(() -> new ResourceNotFound("Department not found"));
+            subDepartment.setDepartment(department);
         }
 
         Sub_department updatedSubDepartment = subDepartmentRepository.save(subDepartment);
