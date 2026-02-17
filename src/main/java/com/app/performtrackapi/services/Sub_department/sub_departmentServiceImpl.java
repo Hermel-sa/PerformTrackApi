@@ -42,6 +42,10 @@ public class sub_departmentServiceImpl implements sub_departmentService{
     @Override
     public SubDepartmentResponseDto getSubDepartmentByDepartmentId(UUID departmentId) {
 
+        if (!departmentRepository.existsById(departmentId)) {
+            throw new ResourceNotFound("Department not found");
+        }
+
         Sub_department subDepartment = subDepartmentRepository.findByDepartmentId(departmentId);
         return subDepartmentMapper.toResponseDto(subDepartment);
     }
