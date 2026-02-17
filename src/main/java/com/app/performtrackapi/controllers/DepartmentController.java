@@ -1,6 +1,7 @@
 package com.app.performtrackapi.controllers;
 
 import com.app.performtrackapi.dtos.Department.DepartmentDto;
+import com.app.performtrackapi.dtos.Department.DepartmentResponseDto;
 import com.app.performtrackapi.services.Department.departmentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,24 +20,24 @@ public class DepartmentController {
     }
 
     @GetMapping("/{departmentId}")
-    public ResponseEntity<DepartmentDto> getDepartmentById(@PathVariable UUID departmentId){
-        DepartmentDto departmentDto = departmentService.getDepartmentById(departmentId);
+    public ResponseEntity<DepartmentResponseDto> getDepartmentById(@PathVariable UUID departmentId){
+        DepartmentResponseDto departmentDto = departmentService.getDepartmentById(departmentId);
         return ResponseEntity.ok(departmentDto);
     }
 
     @PostMapping
-    public ResponseEntity<DepartmentDto> createDepartment(@RequestBody DepartmentDto departmentDto){
+    public ResponseEntity<DepartmentResponseDto> createDepartment(@RequestBody DepartmentDto departmentDto){
         return new ResponseEntity<>(departmentService.createDepartment(departmentDto), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{departmentId}")
-    public ResponseEntity<DepartmentDto> updateDepartment(@PathVariable UUID departmentId, @RequestBody DepartmentDto departmentDto){
+    public ResponseEntity<DepartmentResponseDto> updateDepartment(@PathVariable UUID departmentId, @RequestBody DepartmentDto departmentDto){
         return ResponseEntity.ok(departmentService.updateDepartment(departmentId, departmentDto));
     }
 
     @GetMapping
-    public ResponseEntity<List<DepartmentDto>> getAllDepartments(){
-        List<DepartmentDto> departments = departmentService.getAllDepartments();
+    public ResponseEntity<List<DepartmentResponseDto>> getAllDepartments(){
+        List<DepartmentResponseDto> departments = departmentService.getAllDepartments();
         if(departments.isEmpty()){
             return ResponseEntity.noContent().build();
         }

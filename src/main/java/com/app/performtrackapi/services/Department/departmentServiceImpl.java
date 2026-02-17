@@ -1,6 +1,7 @@
 package com.app.performtrackapi.services.Department;
 
 import com.app.performtrackapi.dtos.Department.DepartmentDto;
+import com.app.performtrackapi.dtos.Department.DepartmentResponseDto;
 import com.app.performtrackapi.entities.Department;
 import com.app.performtrackapi.exceptions.BadRequestException;
 import com.app.performtrackapi.exceptions.ResourceNotFound;
@@ -26,17 +27,17 @@ public class departmentServiceImpl implements departmentService{
     }
 
     @Override
-    public DepartmentDto getDepartmentById(UUID id) {
+    public DepartmentResponseDto getDepartmentById(UUID id) {
 
         Department department = departmentRepository.findById(id).
                 orElseThrow(() -> new ResourceNotFound("Department not found")
                 );
 
-        return departmentMapper.toDto(department);
+        return departmentMapper.toResponseDto(department);
     }
 
     @Override
-    public DepartmentDto createDepartment(@NonNull DepartmentDto departmentDto) {
+    public DepartmentResponseDto createDepartment(@NonNull DepartmentDto departmentDto) {
 
         if (departmentRepository.existsByName(departmentDto.getName())) {
             throw new BadRequestException("Department already exists");
@@ -46,11 +47,11 @@ public class departmentServiceImpl implements departmentService{
 
         Department savedDepartment = departmentRepository.save(department);
 
-        return departmentMapper.toDto(savedDepartment);
+        return departmentMapper.toResponseDto(savedDepartment);
     }
 
     @Override
-    public DepartmentDto updateDepartment(UUID id, @NonNull DepartmentDto departmentDto) {
+    public DepartmentResponseDto updateDepartment(UUID id, @NonNull DepartmentDto departmentDto) {
 
         Department department = departmentRepository.findById(id).
                 orElseThrow(() -> new ResourceNotFound("Department not found")
@@ -62,14 +63,14 @@ public class departmentServiceImpl implements departmentService{
 
         Department updatedDepartment = departmentRepository.save(department);
 
-        return departmentMapper.toDto(updatedDepartment);
+        return departmentMapper.toResponseDto(updatedDepartment);
     }
 
     @Override
-    public List<DepartmentDto> getAllDepartments() {
+    public List<DepartmentResponseDto> getAllDepartments() {
         return departmentRepository.findAll()
                 .stream()
-                .map(departmentMapper::toDto).toList();
+                .map(departmentMapper::toResponseDto).toList();
     }
 
     @Override

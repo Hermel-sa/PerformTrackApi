@@ -1,6 +1,7 @@
 package com.app.performtrackapi.mappers;
 
 import com.app.performtrackapi.dtos.Sub_department.SubDepartmentDto;
+import com.app.performtrackapi.dtos.Sub_department.SubDepartmentResponseDto;
 import com.app.performtrackapi.entities.Sub_department;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -11,5 +12,5 @@ public interface SubDepartmentMapper {
     @Mapping(target = "department", ignore = true)
     Sub_department toEntity(SubDepartmentDto subDepartmentDto);
 
-    SubDepartmentDto toDto(Sub_department sub_department);
+    SubDepartmentResponseDto toResponseDto(Sub_department sub_department);
 }
