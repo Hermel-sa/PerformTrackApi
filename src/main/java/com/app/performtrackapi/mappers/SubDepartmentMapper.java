@@ -12,5 +12,6 @@ public interface SubDepartmentMapper {
     @Mapping(target = "department", ignore = true)
     Sub_department toEntity(SubDepartmentDto subDepartmentDto);
 
+    @Mapping(source = "department.id", target = "departmentId")
     SubDepartmentResponseDto toResponseDto(Sub_department sub_department);
 }
