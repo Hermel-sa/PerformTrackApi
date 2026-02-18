@@ -3,6 +3,7 @@ package com.app.performtrackapi.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -20,5 +21,5 @@ public class Department {
 
     @Column(name = "name", unique = true)
     private String name;
-    
+
 }

@@ -11,6 +11,8 @@ public interface PositionService {
 
     List<PositionResponseDto> getAllPosition();
 
+    List<PositionResponseDto> getAllPositionByDepartmentId(UUID departmentId);
+
     PositionResponseDto createPosition(PositionDto positionDto);
 
     PositionResponseDto updatePosition(UUID id, PositionDto positionDto);

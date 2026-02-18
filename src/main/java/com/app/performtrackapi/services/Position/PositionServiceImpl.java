@@ -48,6 +48,19 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
+    public List<PositionResponseDto> getAllPositionByDepartmentId(UUID departmentId) {
+
+       if (!departmentRepository.existsById(departmentId)) {
+           throw new BadRequestException("Department not found");
+       }
+
+        return positionRepository.findAllByDepartmentId(departmentId)
+                .stream()
+                .map(positionMapper::toResponseDto)
+                .toList();
+    }
+
+    @Override
     public PositionResponseDto createPosition(PositionDto positionDto) {
 
         if (positionRepository.existsByName(positionDto.getName())) {

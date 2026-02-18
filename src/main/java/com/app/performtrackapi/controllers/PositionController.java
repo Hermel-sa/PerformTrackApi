@@ -22,15 +22,17 @@ public class PositionController {
 
     @GetMapping("/")
     public ResponseEntity<List<PositionResponseDto>> getAllPosition() {
-
-        List<PositionResponseDto> positionDto = positionService.getAllPosition();
-
-        return ResponseEntity.ok(positionDto);
+        return ResponseEntity.ok(positionService.getAllPosition());
     }
 
     @GetMapping("/{positionId}")
     public ResponseEntity<PositionResponseDto> getPositionById(@PathVariable UUID positionId) {
         return ResponseEntity.ok(positionService.getPositionById(positionId));
+    }
+
+    @GetMapping("/department/{departmentId}")
+    public ResponseEntity<List<PositionResponseDto>> getAllPositionByDepartmentId(@PathVariable UUID departmentId){
+        return ResponseEntity.ok(positionService.getAllPositionByDepartmentId(departmentId));
     }
 
     @PostMapping("/")
