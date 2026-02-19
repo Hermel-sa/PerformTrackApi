@@ -31,8 +31,8 @@ public class RecordController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<RecordResponseDto>> getAllRecord(@RequestParam(required = false) String period){
-        return ResponseEntity.ok(recordService.getAllRecord(period));
+    public ResponseEntity<List<RecordResponseDto>> getAllCompleteRecords(@RequestParam(required = false) String period){
+        return ResponseEntity.ok(recordService.getAllCompleteRecords(period));
     }
 
     @PostMapping("/")

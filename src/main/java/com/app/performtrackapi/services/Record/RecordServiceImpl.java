@@ -5,6 +5,7 @@ import com.app.performtrackapi.dtos.Record.RecordResponseDto;
 import com.app.performtrackapi.entities.Employee;
 import com.app.performtrackapi.entities.Evaluation;
 import com.app.performtrackapi.entities.Record;
+import com.app.performtrackapi.entities.Status;
 import com.app.performtrackapi.mappers.RecordMapper;
 import com.app.performtrackapi.repositories.EmployeeRepository;
 import com.app.performtrackapi.repositories.EvaluationRepository;
@@ -128,13 +129,13 @@ public class RecordServiceImpl implements RecordService{
     }
 
     @Override
-    public List<RecordResponseDto> getAllRecord(String period) {
+    public List<RecordResponseDto> getAllCompleteRecords(String period) {
 
         if(period != null) {
-            return recordRepository.findByPeriod(period).stream().map(recordMapper::toResponseDto).toList();
+            return recordRepository.findByPeriod(period, Status.completed).stream().map(recordMapper::toResponseDto).toList();
         }
 
-        return recordRepository.findAll().stream().map(recordMapper::toResponseDto).toList();
+        return recordRepository.findByStatus(Status.completed).stream().map(recordMapper::toResponseDto).toList();
     }
 
     @Override
