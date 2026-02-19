@@ -19,8 +19,7 @@ public class Position {
     @ManyToOne
     private Department department;
 
-    @ManyToOne(optional = true)
-    @JoinColumn(nullable = true)
+    @ManyToOne
     private Sub_department subDepartment;
 
     @Column(unique = true)
