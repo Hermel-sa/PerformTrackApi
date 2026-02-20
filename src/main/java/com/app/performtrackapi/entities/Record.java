@@ -43,6 +43,6 @@ public class Record {
 
     private Status status;
 
-    @OneToMany
+    @OneToMany(mappedBy = "recordId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Answer> answers;
 }

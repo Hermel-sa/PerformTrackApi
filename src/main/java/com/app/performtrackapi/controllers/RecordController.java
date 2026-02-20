@@ -1,5 +1,6 @@
 package com.app.performtrackapi.controllers;
 
+import com.app.performtrackapi.dtos.Evaluation.EvaluationWithProgress;
 import com.app.performtrackapi.dtos.Record.RecordDto;
 import com.app.performtrackapi.dtos.Record.RecordResponseDto;
 import com.app.performtrackapi.services.Record.RecordService;
@@ -28,6 +29,11 @@ public class RecordController {
     @GetMapping("/employee/{employeeId}")
     public ResponseEntity<RecordResponseDto> getRecordByEmployeeId(@PathVariable UUID employeeId){
         return ResponseEntity.ok(recordService.getRecordByEmployeeId(employeeId));
+    }
+
+    @GetMapping("/pending/{employeeId}")
+    public ResponseEntity<EvaluationWithProgress> getAllPendingRecords(@PathVariable UUID employeeId){
+        return ResponseEntity.ok(recordService.getPendingRecordByEmployeeId(employeeId));
     }
 
     @GetMapping("/")
