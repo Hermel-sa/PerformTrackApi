@@ -39,4 +39,10 @@ public class CategoryController {
         categoryService.deleteCategory(categoryId);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{categoryId}/reorder")
+    public ResponseEntity<Void> reorderCategory(@PathVariable UUID categoryId, @RequestParam String direction){
+        categoryService.reorderCategory(categoryId, direction);
+        return ResponseEntity.ok().build();
+    }
 }

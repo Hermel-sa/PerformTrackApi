@@ -10,4 +10,5 @@ public interface CategoryService {
     CategoryResponseDto createCategory(CategoryDto categoryDto);
     CategoryResponseDto updateCategory(UUID id, CategoryDto categoryDto);
     void deleteCategory(UUID id);
+    void reorderCategory(UUID categoryId, String direction);
 }
