@@ -24,4 +24,6 @@ public class Position {
 
     @Column(unique = true)
     private String name;
+
+    private String code;
 }

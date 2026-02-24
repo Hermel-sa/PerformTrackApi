@@ -14,4 +14,5 @@ public class PositionResponseDto {
     private UUID departmentId;
     private UUID subDepartmentId;
     private String name;
+    private String code;
 }

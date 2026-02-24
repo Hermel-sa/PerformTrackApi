@@ -69,6 +69,7 @@ public class PositionServiceImpl implements PositionService {
 
         Position position = positionMapper.toEntity(positionDto);
         position.setName(positionDto.getName());
+        position.setCode(positionDto.getCode());
 
         Department department = departmentRepository.findById(positionDto.getDepartmentId())
                 .orElseThrow(() -> new BadRequestException("Department not found"));
@@ -94,6 +95,10 @@ public class PositionServiceImpl implements PositionService {
 
         if (positionDto.getName() != null) {
             position.setName(positionDto.getName());
+        }
+
+        if (positionDto.getCode() != null) {
+            position.setCode(positionDto.getCode());
         }
 
         if (positionDto.getDepartmentId() != null) {
