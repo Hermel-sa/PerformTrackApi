@@ -23,7 +23,7 @@ public class EvaluationInfoServiceImpl implements EvaluationInfoService{
     @Override
     public EvaluationInfoResponseDto getEvaluationInfo() {
 
-        EvaluationInfo evaluationInfo = evaluationInfoRepository.findAll().getFirst();
+        EvaluationInfo evaluationInfo = evaluationInfoRepository.findAll().getLast();
 
         return evaluationInfoMapper.toResponseDto(evaluationInfo);
     }
