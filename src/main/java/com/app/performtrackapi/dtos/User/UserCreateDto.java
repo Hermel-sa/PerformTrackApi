@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,4 +27,8 @@ public class UserCreateDto {
 
     @NotNull(message = "El rol es obligatorio")
     Role role;
+
+    private List<UUID> departmentIds;
+
+    private List<UUID> subDepartmentIds;
 }

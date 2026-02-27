@@ -11,11 +11,16 @@ import org.mapstruct.Mapping;
 public interface UserMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "password", ignore = true)
+    @Mapping(target = "departments", ignore = true)
+    @Mapping(target = "subDepartments", ignore = true)
     User toEntity(UserCreateDto userCreateDto);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "password", ignore = true)
+    @Mapping(target = "departments", ignore = true)
+    @Mapping(target = "subDepartments", ignore = true)
     User toEntity(UserUpdateDto userUpdateDto);
 
+    @Mapping(target = "subdepartments", source = "subDepartments")
     UserResponseDto toResponseDto(User user);
 }
