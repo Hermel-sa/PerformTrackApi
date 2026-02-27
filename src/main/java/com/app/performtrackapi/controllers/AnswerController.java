@@ -34,6 +34,12 @@ public class AnswerController {
         return new ResponseEntity<>(answerService.createAnswer(answerDto), HttpStatus.CREATED);
     }
 
+    @PostMapping("/batch")
+    public ResponseEntity<Void> createAnswers(@RequestBody List<AnswerDto> answersDto){
+        answersDto.forEach(answerService::createAnswer);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
     @PatchMapping("/{answerId}")
     public ResponseEntity<AnswerResponseDto> updateAnswer(@PathVariable UUID answerId, @RequestBody AnswerDto answerDto){
         return ResponseEntity.ok(answerService.updateAnswer(answerId, answerDto));

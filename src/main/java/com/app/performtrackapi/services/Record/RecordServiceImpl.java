@@ -1,6 +1,5 @@
 package com.app.performtrackapi.services.Record;
 
-import com.app.performtrackapi.dtos.Answer.AnswerDto;
 import com.app.performtrackapi.dtos.Evaluation.EvaluationResponseDto;
 import com.app.performtrackapi.dtos.Evaluation.EvaluationWithProgress;
 import com.app.performtrackapi.dtos.Category.CategoryWithProgressDto;
@@ -14,14 +13,18 @@ import com.app.performtrackapi.entities.Status;
 import com.app.performtrackapi.mappers.RecordMapper;
 import com.app.performtrackapi.repositories.EmployeeRepository;
 import com.app.performtrackapi.repositories.EvaluationRepository;
+import com.app.performtrackapi.repositories.EvaluationInfoRepository;
 import com.app.performtrackapi.repositories.QuestionRepository;
 import com.app.performtrackapi.repositories.RecordRepository;
 import com.app.performtrackapi.entities.Answer;
+import com.app.performtrackapi.entities.EvaluationInfo;
 import com.app.performtrackapi.entities.Question;
 import java.util.ArrayList;
 
+import com.app.performtrackapi.entities.User;
 import com.app.performtrackapi.services.Evaluation.EvaluationService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,16 +42,19 @@ public class RecordServiceImpl implements RecordService {
     private final EmployeeRepository employeeRepository;
     private final QuestionRepository questionRepository;
     private final EvaluationService evaluationService;
+    private final EvaluationInfoRepository evaluationInfoRepository;
 
     public RecordServiceImpl(RecordRepository recordRepository, RecordMapper recordMapper,
             EvaluationRepository evaluationRepository, EmployeeRepository employeeRepository,
-            QuestionRepository questionRepository, EvaluationService evaluationService) {
+            QuestionRepository questionRepository, EvaluationService evaluationService,
+            EvaluationInfoRepository evaluationInfoRepository) {
         this.recordRepository = recordRepository;
         this.recordMapper = recordMapper;
         this.evaluationRepository = evaluationRepository;
         this.employeeRepository = employeeRepository;
         this.questionRepository = questionRepository;
         this.evaluationService = evaluationService;
+        this.evaluationInfoRepository = evaluationInfoRepository;
     }
 
     @Override
@@ -58,14 +64,22 @@ public class RecordServiceImpl implements RecordService {
         Employee employee = employeeRepository.findById(recordDto.getEmployeeId())
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
 
-        Employee evaluator = employeeRepository.findById(recordDto.getEvaluatorId())
-                .orElseThrow(() -> new RuntimeException("Evaluator not found"));
+        // Get current authenticated user
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // Find employee associated with the current user to use as evaluator
+        Employee evaluator = employeeRepository.findByUser(currentUser)
+                .orElseThrow(() -> new RuntimeException("Logged in user is not associated with an employee record"));
+
+        // Get current evaluation info for the period
+        EvaluationInfo evaluationInfo = evaluationInfoRepository.findAll().get(evaluationInfoRepository.findAll().size() - 1);
 
         Record record = recordMapper.toEntity(recordDto);
 
         record.setEvaluation(evaluation);
         record.setEmployee(employee);
         record.setEvaluator(evaluator);
+        record.setPeriod(evaluationInfo.getPeriod()); // Override with current period
 
         // Map and link answers
         if (recordDto.getAnswers() != null) {

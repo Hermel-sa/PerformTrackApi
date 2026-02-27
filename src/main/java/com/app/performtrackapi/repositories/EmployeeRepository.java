@@ -10,4 +10,5 @@ import java.util.UUID;
 public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
     boolean existsById(UUID id);
     Employee findByPositionId(UUID positionId);
+    java.util.Optional<Employee> findByUser(com.app.performtrackapi.entities.User user);
 }
